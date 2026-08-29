@@ -1,0 +1,93 @@
+---
+// Landing page for Serv on tillmanbuildstech.com.
+// Drop into: src/pages/serv/index.astro  →  serves at /serv/
+import ServLayout from '../../layouts/ServLayout.astro';
+
+const canonical = 'https://tillmanbuildstech.com/serv/';
+const title = 'Serv — run any program as a native service on Windows, Linux & macOS';
+const description = 'Serv installs and supervises a long-running executable as a native Windows service, systemd unit, or launchd job from one YAML config. A modern, cross-platform alternative to NSSM.';
+---
+
+<ServLayout title={title} description={description} canonical={canonical}>
+  <section class="serv-hero">
+    <p class="serv-label">// product</p>
+    <h1>Run any program as a native service</h1>
+    <p class="lead">
+      Serv installs and supervises a long-running executable as a native
+      <strong>Windows service</strong>, <strong>systemd unit</strong>, or
+      <strong>launchd job</strong> — all from one YAML config that works the
+      same on every platform.
+    </p>
+    <a class="serv-cta" href="/serv/nssm-alternative/">$ why it beats nssm</a>
+  </section>
+
+  <section>
+    <p class="serv-label">// one config, three platforms</p>
+    <h2>One config, three platforms</h2>
+    <p>
+      The same <code>ServiceConfig</code> YAML installs a Windows service, a
+      systemd unit, or a launchd job. No more maintaining separate
+      <code>systemd</code> unit files, launchd plists, and Windows service glue.
+    </p>
+    <pre><code>serv install --exe /path/to/myapp --name myapp
+serv start myapp
+serv status myapp</code></pre>
+  </section>
+
+  <section>
+    <p class="serv-label">// what serv gives you</p>
+    <h2>What Serv gives you</h2>
+    <ul>
+      <li><strong>Graceful shutdown escalation</strong> — Ctrl+C → window close → thread quit → terminate on Windows; SIGTERM → SIGKILL on Linux/macOS.</li>
+      <li><strong>Automatic restart with backoff</strong> — exponential backoff on repeated failures, resetting after sustained uptime.</li>
+      <li><strong>Per-exit-code actions</strong> — restart, ignore, exit cleanly, or trigger platform crash recovery based on the child's exit code.</li>
+      <li><strong>stdout/stderr capture &amp; rotation</strong> — line-buffered logs with size- and age-based rotation.</li>
+      <li><strong>Lifecycle hooks</strong> — run commands at pre-start, post-start, pre-stop, or post-exit.</li>
+      <li><strong>Windows account management</strong> — LocalSystem/LocalService/NetworkService, virtual accounts, or a custom account granted "Log on as a service".</li>
+      <li><strong>Process tree killing</strong> — kills the whole descendant tree with PID-reuse protection.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="serv-label">// guides</p>
+    <div class="serv-cards">
+      <div>
+        <h3>Run a Python script as a service</h3>
+        <p>Turn a <code>python app.py</code> into a supervised, auto-restarting service on Windows, Linux, or macOS.</p>
+        <a href="/serv/run-python-as-a-service/">Learn how →</a>
+      </div>
+      <div>
+        <h3>Run a Node.js app as a service</h3>
+        <p>Stop babysitting <code>node server.js</code> with nohup and tmux. Make it a real managed service.</p>
+        <a href="/serv/run-node-as-a-service/">Learn how →</a>
+      </div>
+      <div>
+        <h3>Why Serv instead of NSSM</h3>
+        <p>A modern, cross-platform replacement for NSSM — one config on every OS, graceful shutdown, hooks.</p>
+        <a href="/serv/nssm-alternative/">See the comparison →</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="serv-label">// source</p>
+    <p>
+      MIT licensed, open source.
+      <a href="https://github.com/TillmanBuildsTech/serv">Source on GitHub →</a>
+    </p>
+  </section>
+</ServLayout>
+
+<style is:global>
+  .serv-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-5);
+  }
+  .serv-cards > div {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: var(--space-5);
+  }
+</style>
