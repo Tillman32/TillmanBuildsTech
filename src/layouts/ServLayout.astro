@@ -1,0 +1,169 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import FooterBar from '../components/FooterBar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogTitle?: string;
+  ogDescription?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogTitle = title,
+  ogDescription = description,
+} = Astro.props;
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://tillmanbuildstech.com';
+const appVersion = '0.1.9';
+const ogImage = `${siteUrl}/og-image.png`;
+---
+
+<BaseLayout title={title} description={description} canonical={canonical}>
+  <!-- SoftwareApplication structured data (serv is a developer tool / app) -->
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Serv",
+    "operatingSystem": "Windows, Linux, macOS",
+    "applicationCategory": "DeveloperApplication",
+    "softwareVersion": appVersion,
+    "description": description,
+    "url": canonical,
+    "sameAs": "https://github.com/TillmanBuildsTech/serv",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Install and supervise any executable as a native service",
+      "Windows service (SCM), systemd unit, or launchd job",
+      "Graceful shutdown escalation",
+      "Automatic restart with exponential backoff",
+      "stdout/stderr capture and rotation",
+      "Lifecycle hooks",
+      "Windows account management"
+    ]
+  })} />
+
+  <!-- Vercel Web Analytics (external snippet, CSP-safe). Enable the project
+       toggle in Vercel; the snippet alone does nothing. -->
+  <script is:inline defer src="/_vercel/insights/script.js"></script>
+
+  <Nav />
+
+  <main class="serv-page">
+    <slot />
+  </main>
+
+  <FooterBar />
+
+  <script>import '../scripts/main.js';</script>
+</BaseLayout>
+
+<style is:global>
+  /* Serv pages reuse the site's design tokens. Keep the retro-terminal feel:
+     mono section labels (//), $ CTAs, warm dark surfaces. */
+  .serv-page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+  .serv-page section {
+    border-top: 1px solid var(--border);
+    padding: var(--space-8) 0;
+  }
+  .serv-page section:first-of-type {
+    border-top: 0;
+  }
+  .serv-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--space-4);
+  }
+  .serv-hero .lead {
+    font-size: 1.25rem;
+    color: var(--muted);
+    max-width: 44rem;
+  }
+  .serv-page h2 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3vw, 34px);
+    margin: 0 0 var(--space-4);
+  }
+  .serv-page h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin: 0 0 var(--space-2);
+  }
+  .serv-page .serv-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--space-2);
+  }
+  .serv-page code,
+  .serv-page pre {
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .serv-page pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: var(--space-4);
+    overflow-x: auto;
+    margin: var(--space-4) 0;
+  }
+  .serv-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  .serv-page th,
+  .serv-page td {
+    text-align: left;
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .serv-page th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .serv-page a {
+    color: var(--accent);
+  }
+  .serv-page ul,
+  .serv-page ol {
+    padding-left: var(--space-4);
+    line-height: 1.7;
+  }
+  .serv-cta {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--accent);
+    border-radius: 4px;
+    padding: var(--space-3) var(--space-5);
+    text-decoration: none;
+  }
+  .serv-cta:hover {
+    opacity: 0.9;
+  }
+</style>

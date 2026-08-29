@@ -1,0 +1,65 @@
+---
+// Long-tail SEO page: "run python as a service".
+// Drop into: src/pages/serv/run-python-as-a-service.astro  →  /serv/run-python-as-a-service/
+import ServLayout from '../../layouts/ServLayout.astro';
+
+const canonical = 'https://tillmanbuildstech.com/serv/run-python-as-a-service/';
+const title = 'How to run a Python script as a service (Windows, Linux, macOS) — Serv';
+const description = 'Turn any Python script into a supervised, auto-restarting native service with Serv. One YAML config installs a Windows service, a systemd unit, or a launchd job.';
+---
+
+<ServLayout title={title} description={description} canonical={canonical}>
+  <section class="serv-hero">
+    <p class="serv-label">// guide</p>
+    <h1>Run a Python script as a service</h1>
+    <p class="lead">
+      You've got a Python app — an API server, a worker, a scraper — and you need it
+      running all the time, surviving reboots and crashes, with logs you can actually read. That's what
+      a service is for. Serv turns <code>python app.py</code> into a native, supervised service on
+      Windows, Linux, or macOS.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// why not a terminal</p>
+    <h2>Why not just run it in a terminal?</h2>
+    <p>
+      A terminal process dies when you close the session, doesn't come back after a reboot, and leaves
+      no restart policy. A real service is started by the OS, restarts on failure, and runs whether or not
+      anyone is logged in.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// install &amp; start</p>
+    <h2>Install and start it</h2>
+    <pre><code>serv install --exe /usr/bin/python3 --name mypy --args "-u /srv/app/app.py"
+serv start mypy
+serv status mypy</code></pre>
+    <p>That's it. Serv registers the script as a native service, starts it, and supervises it.</p>
+  </section>
+
+  <section>
+    <p class="serv-label">// supervision for free</p>
+    <h2>Supervision you get for free</h2>
+    <ul>
+      <li><strong>Auto-restart with backoff</strong> — if the script crashes, Serv restarts it with exponential backoff so it doesn't hot-loop.</li>
+      <li><strong>Graceful shutdown</strong> — sends SIGTERM (Windows: Ctrl+C escalation) so your script can clean up.</li>
+      <li><strong>Log capture &amp; rotation</strong> — stdout/stderr are captured and rotated, no more lost tracebacks.</li>
+      <li><strong>Lifecycle hooks</strong> — run setup before start or cleanup after exit.</li>
+    </ul>
+    <p>
+      Prefer a YAML config? Serv reads the same settings from a file — see the
+      <a href="https://github.com/TillmanBuildsTech/serv/blob/main/docs/configuration.md">configuration reference</a>.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// alternatives</p>
+    <h2>Alternatives</h2>
+    <p>
+      On Windows you might reach for <a href="/serv/nssm-alternative/">NSSM</a>. Serv is a modern,
+      cross-platform replacement that uses the same YAML everywhere.
+    </p>
+  </section>
+</ServLayout>
