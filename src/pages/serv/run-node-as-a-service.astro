@@ -31,7 +31,15 @@ const description = 'Make a Node.js server or worker a supervised, auto-restarti
 
   <section>
     <p class="serv-label">// install &amp; start</p>
-    <h2>Install and start it</h2>
+    <h2>Get serv, then install and start it</h2>
+    <p>
+      First, install the <code>serv</code> CLI once —
+      <a href="/serv/#install">one line for your OS</a>:
+    </p>
+    <pre><code>winget install TillmanBuildsTech.Serv   # Windows (or: choco install serv)
+brew install serv                       # macOS
+npm install -g @tillmanbuildstech/serv  # any OS with Node.js</code></pre>
+    <p>Then register your app as a service:</p>
     <pre><code>serv install --exe /usr/bin/node --name myapi --args "/srv/app/server.js"
 serv start myapi
 serv status myapi</code></pre>

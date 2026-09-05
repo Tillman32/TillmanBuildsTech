@@ -4,11 +4,18 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  /** Absolute URL for a page-specific Open Graph image (default: /og-image.png). */
+  ogImage?: string;
+  /** Public path to a page-specific favicon PNG (e.g. /serv/favicon-32.png).
+      When set, replaces the site-wide SVG/ICO favicons for this page. */
+  favicon?: string;
 }
 
 const {
   title = "TillmanBuildsTech — Brandon Tillman, Independent Consultant",
   description = "Brandon Tillman — Independent consultant building AI agents, automation, web apps, and DevOps infrastructure for businesses that want results, not demos.",
+  ogImage,
+  favicon,
 } = Astro.props;
 
 const siteUrl = (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://tillmanbuildstech.com';
@@ -18,7 +25,7 @@ const blogUrl = (import.meta.env.PUBLIC_BLOG_URL as string | undefined) ?? 'http
 
 const path = Astro.url.pathname;
 const canonical = new URL(path, siteUrl).toString();
-const ogImage = new URL('/og-image.png', siteUrl).toString();
+const ogImageUrl = ogImage ?? new URL('/og-image.png', siteUrl).toString();
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -27,7 +34,7 @@ const personSchema = {
   url: siteUrl,
   jobTitle: 'Independent Consultant',
   description: 'Independent consultant specializing in AI agents, automation, web applications, and DevOps infrastructure.',
-  image: ogImage,
+  image: ogImageUrl,
   sameAs: [githubUrl, linkedinUrl, blogUrl],
 };
 
@@ -57,18 +64,24 @@ const websiteSchema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- PWA-ish / theme -->
     <meta name="theme-color" content="#0C0A09" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    {favicon ? (
+      <link rel="icon" type="image/png" sizes="32x32" href={favicon} />
+    ) : (
+      <>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+      </>
+    )}
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Structured data -->

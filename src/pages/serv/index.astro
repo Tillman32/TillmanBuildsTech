@@ -6,19 +6,114 @@ import ServLayout from '../../layouts/ServLayout.astro';
 const canonical = 'https://tillmanbuildstech.com/serv/';
 const title = 'Serv — run any program as a native service on Windows, Linux & macOS';
 const description = 'Serv installs and supervises a long-running executable as a native Windows service, systemd unit, or launchd job from one YAML config. A modern, cross-platform alternative to NSSM.';
+
+const installs = [
+  {
+    os: 'Windows',
+    pkg: 'winget',
+    cmd: 'winget install TillmanBuildsTech.Serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+  {
+    os: 'Windows',
+    pkg: 'chocolatey',
+    cmd: 'choco install serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+  {
+    os: 'macOS',
+    pkg: 'homebrew',
+    cmd: 'brew install serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+  {
+    os: 'Any OS',
+    pkg: 'npm',
+    cmd: 'npm install -g @tillmanbuildstech/serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+];
 ---
 
 <ServLayout title={title} description={description} canonical={canonical}>
   <section class="serv-hero">
-    <p class="serv-label">// product</p>
-    <h1>Run any program as a native service</h1>
-    <p class="lead">
-      Serv installs and supervises a long-running executable as a native
-      <strong>Windows service</strong>, <strong>systemd unit</strong>, or
-      <strong>launchd job</strong> — all from one YAML config that works the
-      same on every platform.
+    <div class="serv-hero-row">
+      <div>
+        <p class="serv-brand">
+          <img src="/serv/icon-256.png" width="44" height="44" alt="Serv logo — terminal mark in a rounded square" />
+          <span class="serv-brand__name">serv</span>
+          <a class="serv-brand__ver" href="https://github.com/TillmanBuildsTech/serv/releases/latest">v0.2.0</a>
+        </p>
+        <h1>Run any program as a native service</h1>
+        <p class="lead">
+          Serv installs and supervises a long-running executable as a native
+          <strong>Windows service</strong>, <strong>systemd unit</strong>, or
+          <strong>launchd job</strong> — all from one YAML config that works the
+          same on every platform.
+        </p>
+        <div class="serv-cta-row">
+          <a class="serv-cta" href="#install">$ install serv</a>
+          <a class="serv-cta-ghost" href="/serv/nssm-alternative/">why it beats nssm →</a>
+          <a class="serv-cta-ghost" href="https://github.com/TillmanBuildsTech/serv"><span class="star">★</span> star on github</a>
+        </div>
+      </div>
+
+      <div class="serv-term" aria-label="Serv quickstart terminal">
+        <div class="serv-term__chrome">
+          <i></i><i></i><i></i>
+          <span>serv@release ~ quickstart</span>
+        </div>
+        <div class="serv-term__body">
+          <div class="st-comment"># install &amp; run any app — Windows shown,</div>
+          <div class="st-comment"># same flow on Linux &amp; macOS</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">winget install TillmanBuildsTech.Serv</span></div>
+          <div class="st-ok">✓ serv v0.2.0 on PATH</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">serv install --exe ./myapp --name myapp</span></div>
+          <div class="st-ok">✓ service "myapp" installed</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">serv start myapp</span></div>
+          <div class="st-ok">✓ running · restarts on crash · logs captured</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">serv status myapp</span></div>
+          <div class="st-out">myapp&nbsp;&nbsp;·&nbsp;&nbsp;running&nbsp;&nbsp;·&nbsp;&nbsp;PID 2917&nbsp;&nbsp;·&nbsp;&nbsp;up 1m30s</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <p class="serv-label">// install</p>
+    <h2>Install serv in one line</h2>
+    <p>
+      Pick your platform. Every route installs the same prebuilt, MIT-licensed
+      <code>serv</code> binary — no GUI, no service-config scaffolding, just the CLI.
     </p>
-    <a class="serv-cta" href="/serv/nssm-alternative/">$ why it beats nssm</a>
+    <div class="install-grid">
+      {
+        installs.map((it) => (
+          <div class="install-card" data-copyblock>
+            <div class="install-card__head">
+              <h3>
+                {it.os}
+                <span class="pkg">{it.pkg}</span>
+              </h3>
+              <button type="button" data-copy data-copy-label="$ copy" aria-label={`Copy ${it.os} install command`}>$ copy</button>
+            </div>
+            <pre><code>{it.cmd}</code></pre>
+            <a class="install-note" href={it.link}>docs →</a>
+          </div>
+        ))
+      }
+    </div>
+    <p class="install-note">
+      Windows package managers need an elevated shell. Chocolatey and npm pin the
+      release SHA-256 and verify before installing — see the
+      <a href="https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md">install docs</a>
+      for Scoop, direct binary downloads, and building from source.
+    </p>
+    <p class="install-note">
+      Done? Start with
+      <a href="/serv/run-python-as-a-service/">Python</a> or
+      <a href="/serv/run-node-as-a-service/">Node.js</a>.
+    </p>
   </section>
 
   <section>
@@ -67,14 +162,6 @@ serv status myapp</code></pre>
         <a href="/serv/nssm-alternative/">See the comparison →</a>
       </div>
     </div>
-  </section>
-
-  <section>
-    <p class="serv-label">// source</p>
-    <p>
-      MIT licensed, open source.
-      <a href="https://github.com/TillmanBuildsTech/serv">Source on GitHub →</a>
-    </p>
   </section>
 </ServLayout>
 
