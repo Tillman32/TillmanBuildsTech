@@ -1,0 +1,71 @@
+---
+// Long-tail SEO page: "run node as a service".
+// Drop into: src/pages/serv/run-node-as-a-service.astro  →  /serv/run-node-as-a-service/
+import ServLayout from '../../layouts/ServLayout.astro';
+
+const canonical = 'https://tillmanbuildstech.com/serv/run-node-as-a-service/';
+const title = 'How to run a Node.js app as a service (Windows, Linux, macOS) — Serv';
+const description = 'Make a Node.js server or worker a supervised, auto-restarting native service with Serv. One YAML config installs a Windows service, systemd unit, or launchd job.';
+---
+
+<ServLayout title={title} description={description} canonical={canonical}>
+  <section class="serv-hero">
+    <p class="serv-label">// guide</p>
+    <h1>Run a Node.js app as a service</h1>
+    <p class="lead">
+      You built your <code>server.js</code> with Express, Fastify, or a worker queue. Now it needs to
+      run permanently — boot with the machine, restart after a crash, and log where you can find it.
+      Serv turns <code>node server.js</code> into a native, supervised service on Windows, Linux, or macOS.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// goodbye nohup &amp; tmux</p>
+    <h2>Say goodbye to nohup and tmux</h2>
+    <p>
+      Backgrounding with <code>nohup</code>, screen, or tmux keeps your process alive only until the session
+      dies or the machine reboots, and gives you no restart policy. A real service is started by the OS
+      and supervised independently of any login session.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// install &amp; start</p>
+    <h2>Get serv, then install and start it</h2>
+    <p>
+      First, install the <code>serv</code> CLI once —
+      <a href="/serv/#install">one line for your OS</a>:
+    </p>
+    <pre><code>winget install TillmanBuildsTech.Serv   # Windows (or: choco install serv)
+brew install serv                       # macOS
+npm install -g @tillmanbuildstech/serv  # any OS with Node.js</code></pre>
+    <p>Then register your app as a service:</p>
+    <pre><code>serv install --exe /usr/bin/node --name myapi --args "/srv/app/server.js"
+serv start myapi
+serv status myapi</code></pre>
+  </section>
+
+  <section>
+    <p class="serv-label">// supervision for free</p>
+    <h2>Supervision you get for free</h2>
+    <ul>
+      <li><strong>Auto-restart with backoff</strong> — a crash doesn't mean downtime; Serv restarts with exponential backoff.</li>
+      <li><strong>Graceful shutdown</strong> — sends SIGTERM so Node can close connections and flush before exit.</li>
+      <li><strong>Log capture &amp; rotation</strong> — console output is captured and rotated instead of vanishing.</li>
+      <li><strong>Process tree killing</strong> — stops the whole child tree, not just the parent Node process.</li>
+    </ul>
+    <p>
+      For every configurable field see the
+      <a href="https://github.com/TillmanBuildsTech/serv/blob/main/docs/configuration.md">configuration reference</a>.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// alternatives</p>
+    <h2>Alternatives</h2>
+    <p>
+      Compare against <a href="/serv/nssm-alternative/">NSSM</a> and other process managers. Serv is a modern,
+      cross-platform replacement that uses one YAML config everywhere.
+    </p>
+  </section>
+</ServLayout>

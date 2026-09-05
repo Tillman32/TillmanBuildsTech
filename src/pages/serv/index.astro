@@ -1,0 +1,210 @@
+---
+// Landing page for Serv on tillmanbuildstech.com.
+// Drop into: src/pages/serv/index.astro  →  serves at /serv/
+import ServLayout from '../../layouts/ServLayout.astro';
+
+const canonical = 'https://tillmanbuildstech.com/serv/';
+const title = 'Serv — run any program as a native service on Windows, Linux & macOS';
+const description = 'Serv installs and supervises a long-running executable as a native Windows service, systemd unit, or launchd job from one YAML config. A modern, cross-platform alternative to NSSM.';
+
+const installs = [
+  {
+    os: 'Windows',
+    pkg: 'winget',
+    cmd: 'winget install TillmanBuildsTech.Serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+  {
+    os: 'Windows',
+    pkg: 'chocolatey',
+    cmd: 'choco install serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+  {
+    os: 'macOS',
+    pkg: 'homebrew',
+    cmd: 'brew install serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+  {
+    os: 'Any OS',
+    pkg: 'npm',
+    cmd: 'npm install -g @tillmanbuildstech/serv',
+    link: 'https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md',
+  },
+];
+---
+
+<ServLayout title={title} description={description} canonical={canonical}>
+  <section class="serv-hero">
+    <div class="serv-hero-row">
+      <div>
+        <p class="serv-brand">
+          <img src="/serv/icon-256.png" width="44" height="44" alt="Serv logo — terminal mark in a rounded square" />
+          <span class="serv-brand__name">serv</span>
+          <a class="serv-brand__ver" href="https://github.com/TillmanBuildsTech/serv/releases/latest">v0.2.0</a>
+        </p>
+        <h1>Run any program as a native service</h1>
+        <p class="lead">
+          Serv installs and supervises a long-running executable as a native
+          <strong>Windows service</strong>, <strong>systemd unit</strong>, or
+          <strong>launchd job</strong> — all from one YAML config that works the
+          same on every platform.
+        </p>
+        <div class="serv-cta-row">
+          <a class="serv-cta" href="#install">$ install serv</a>
+          <a class="serv-cta-ghost" href="/serv/nssm-alternative/">why it beats nssm →</a>
+          <a class="serv-cta-ghost" href="https://github.com/TillmanBuildsTech/serv"><span class="star">★</span> star on github</a>
+        </div>
+      </div>
+
+      <div class="serv-term" aria-label="Serv quickstart terminal">
+        <div class="serv-term__chrome">
+          <i></i><i></i><i></i>
+          <span>serv@release ~ quickstart</span>
+        </div>
+        <div class="serv-term__body">
+          <div class="st-comment"># install &amp; run any app — Windows shown,</div>
+          <div class="st-comment"># same flow on Linux &amp; macOS</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">winget install TillmanBuildsTech.Serv</span></div>
+          <div class="st-ok">✓ serv v0.2.0 on PATH</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">serv install --exe ./myapp --name myapp</span></div>
+          <div class="st-ok">✓ service "myapp" installed</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">serv start myapp</span></div>
+          <div class="st-ok">✓ running · restarts on crash · logs captured</div>
+          <div><span class="st-prompt">$</span> <span class="st-cmd">serv status myapp</span></div>
+          <div class="st-out">myapp&nbsp;&nbsp;·&nbsp;&nbsp;running&nbsp;&nbsp;·&nbsp;&nbsp;PID 2917&nbsp;&nbsp;·&nbsp;&nbsp;up 1m30s</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <p class="serv-label">// install</p>
+    <h2>Install serv in one line</h2>
+    <p>
+      Pick your platform. Every route installs the same prebuilt, MIT-licensed
+      <code>serv</code> binary — no GUI, no service-config scaffolding, just the CLI.
+    </p>
+    <div class="install-grid">
+      {
+        installs.map((it) => (
+          <div class="install-card" data-copyblock>
+            <div class="install-card__head">
+              <h3>
+                {it.os}
+                <span class="pkg">{it.pkg}</span>
+              </h3>
+              <button type="button" data-copy data-copy-label="$ copy" aria-label={`Copy ${it.os} install command`}>$ copy</button>
+            </div>
+            <pre><code>{it.cmd}</code></pre>
+            <a class="install-note" href={it.link}>docs →</a>
+          </div>
+        ))
+      }
+    </div>
+    <p class="install-note">
+      Windows package managers need an elevated shell. Chocolatey and npm pin the
+      release SHA-256 and verify before installing — see the
+      <a href="https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md">install docs</a>
+      for Scoop, direct binary downloads, and building from source.
+    </p>
+    <p class="install-note">
+      Done? Start with
+      <a href="/serv/run-python-as-a-service/">Python</a> or
+      <a href="/serv/run-node-as-a-service/">Node.js</a>.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// one config, three platforms</p>
+    <h2>One config, three platforms</h2>
+    <p>
+      The same <code>ServiceConfig</code> YAML installs a Windows service, a
+      systemd unit, or a launchd job. No more maintaining separate
+      <code>systemd</code> unit files, launchd plists, and Windows service glue.
+    </p>
+    <pre><code>serv install --exe /path/to/myapp --name myapp
+serv start myapp
+serv status myapp</code></pre>
+  </section>
+
+  <section>
+    <p class="serv-label">// what serv gives you</p>
+    <h2>What Serv gives you</h2>
+    <ul>
+      <li><strong>Graceful shutdown escalation</strong> — Ctrl+C → window close → thread quit → terminate on Windows; SIGTERM → SIGKILL on Linux/macOS.</li>
+      <li><strong>Automatic restart with backoff</strong> — exponential backoff on repeated failures, resetting after sustained uptime.</li>
+      <li><strong>Per-exit-code actions</strong> — restart, ignore, exit cleanly, or trigger platform crash recovery based on the child's exit code.</li>
+      <li><strong>stdout/stderr capture &amp; rotation</strong> — line-buffered logs with size- and age-based rotation.</li>
+      <li><strong>Lifecycle hooks</strong> — run commands at pre-start, post-start, pre-stop, or post-exit.</li>
+      <li><strong>Windows account management</strong> — LocalSystem/LocalService/NetworkService, virtual accounts, or a custom account granted "Log on as a service".</li>
+      <li><strong>Process tree killing</strong> — kills the whole descendant tree with PID-reuse protection.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="serv-label">// guides</p>
+    <div class="serv-cards">
+      <div>
+        <h3>Run a Python script as a service</h3>
+        <p>Turn a <code>python app.py</code> into a supervised, auto-restarting service on Windows, Linux, or macOS.</p>
+        <a href="/serv/run-python-as-a-service/">Learn how →</a>
+      </div>
+      <div>
+        <h3>Run a Node.js app as a service</h3>
+        <p>Stop babysitting <code>node server.js</code> with nohup and tmux. Make it a real managed service.</p>
+        <a href="/serv/run-node-as-a-service/">Learn how →</a>
+      </div>
+      <div>
+        <h3>Why Serv instead of NSSM</h3>
+        <p>A modern, cross-platform replacement for NSSM — one config on every OS, graceful shutdown, hooks.</p>
+        <a href="/serv/nssm-alternative/">See the comparison →</a>
+      </div>
+    </div>
+  </section>
+</ServLayout>
+
+<style is:global>
+  .serv-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+  .serv-cards > div {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .serv-cards > div:hover {
+    border-color: var(--accent);
+  }
+  .serv-cards h3 {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+    margin: 0 0 var(--space-1);
+  }
+  .serv-cards p {
+    margin: 0 0 var(--space-2);
+    max-width: none;
+  }
+  .serv-cards a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .serv-cards a:hover {
+    text-decoration: underline;
+  }
+</style>

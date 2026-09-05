@@ -1,0 +1,496 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import FooterBar from '../components/FooterBar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogTitle?: string;
+  ogDescription?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogTitle = title,
+  ogDescription = description,
+} = Astro.props;
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://tillmanbuildstech.com';
+const appVersion = '0.2.0';
+const ogImage = `${siteUrl}/serv/og-image.png`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  favicon="/serv/favicon-32.png"
+  ogImage={ogImage}
+>
+  <!-- SoftwareApplication structured data (serv is a developer tool / app) -->
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Serv",
+    "operatingSystem": "Windows, Linux, macOS",
+    "applicationCategory": "DeveloperApplication",
+    "softwareVersion": appVersion,
+    "description": description,
+    "url": canonical,
+    "sameAs": "https://github.com/TillmanBuildsTech/serv",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Install and supervise any executable as a native service",
+      "Windows service (SCM), systemd unit, or launchd job",
+      "Graceful shutdown escalation",
+      "Automatic restart with exponential backoff",
+      "stdout/stderr capture and rotation",
+      "Lifecycle hooks",
+      "Windows account management"
+    ]
+  })} />
+
+  <!-- Vercel Web Analytics (external snippet, CSP-safe). Enable the project
+       toggle in Vercel; the snippet alone does nothing. -->
+  <script is:inline defer src="/_vercel/insights/script.js"></script>
+
+  <Nav />
+
+  <main class="serv-page">
+    <slot />
+
+    <!-- Product footer band — brand, version, license, and key links on
+         every Serv page. -->
+    <div class="serv-foot">
+      <span class="serv-foot__brand">
+        <img src="/serv/icon-256.png" width="20" height="20" alt="" />
+        <b>serv</b>
+        <a href="https://github.com/TillmanBuildsTech/serv/releases/latest">v{appVersion}</a>
+      </span>
+      <span class="serv-foot__copy">MIT licensed &middot; one YAML config, three platforms</span>
+      <span class="serv-foot__links">
+        <a href="https://github.com/TillmanBuildsTech/serv">source</a>
+        <a href="https://github.com/TillmanBuildsTech/serv/blob/main/docs/installation.md">install docs</a>
+        <a href="https://github.com/TillmanBuildsTech/serv/blob/main/docs/configuration.md">config reference</a>
+      </span>
+    </div>
+  </main>
+
+  <FooterBar />
+
+  <script>
+    import '../scripts/main.js';
+    import '../scripts/serv-copy.js';
+  </script>
+</BaseLayout>
+
+<style is:global>
+  /* Serv pages reuse the site's design tokens. Keep the retro-terminal feel:
+     mono section labels (//), $ CTAs, warm dark surfaces. */
+  .serv-page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+  .serv-page section {
+    border-top: 1px solid var(--border);
+    padding: var(--space-8) 0;
+  }
+  .serv-page section:first-of-type {
+    border-top: 0;
+  }
+  .serv-page section.serv-hero {
+    border-top: 0;
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-8);
+  }
+  .serv-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0 0 var(--space-2);
+  }
+  .serv-hero .lead {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 42rem;
+    margin: 0;
+  }
+  .serv-hero .lead strong {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .serv-page h2 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 0 0 var(--space-3);
+  }
+  .serv-page h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text);
+    margin: 0 0 var(--space-2);
+  }
+  .serv-page p {
+    max-width: 65ch;
+  }
+  .serv-page p + p {
+    margin-top: var(--space-3);
+  }
+  .serv-page .serv-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 var(--space-2);
+  }
+  .serv-page code,
+  .serv-page pre {
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .serv-page p code {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.9em;
+  }
+  .serv-page pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: var(--space-4);
+    overflow-x: auto;
+    line-height: 1.7;
+    margin: var(--space-4) 0;
+  }
+  .serv-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .serv-page th,
+  .serv-page td {
+    text-align: left;
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .serv-page thead th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .serv-page tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .serv-page tbody tr:nth-child(even) {
+    background: var(--surface);
+  }
+  .serv-page tbody td:first-child {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .serv-page a {
+    color: var(--accent);
+  }
+  .serv-page ul,
+  .serv-page ol {
+    padding-left: var(--space-4);
+    line-height: 1.7;
+    max-width: 65ch;
+  }
+  .serv-page li + li {
+    margin-top: var(--space-1);
+  }
+  .serv-page li strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .serv-cta {
+    display: inline-block;
+    margin-top: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .serv-cta:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+  .serv-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .serv-cta-row .serv-cta { margin-top: 0; }
+  .serv-cta-ghost {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 16px;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .serv-cta-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .serv-cta-ghost .star { color: var(--accent); }
+
+  /* Brand lockup — Serv logo mark + wordmark + version chip */
+  .serv-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: var(--space-3);
+  }
+  .serv-brand img {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--border), 0 0 0 1px rgba(46, 203, 168, 0.22);
+  }
+  .serv-brand__name {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+  .serv-brand__name::after { content: '_'; color: var(--accent); }
+  .serv-brand__ver {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 3px 8px;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .serv-brand__ver:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Split hero — copy left, quickstart terminal right */
+  .serv-hero-row {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  @media (max-width: 880px) {
+    .serv-hero-row { grid-template-columns: 1fr; }
+  }
+
+  /* Quickstart terminal panel (static, mirrors site terminal aesthetic) */
+  .serv-term {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .serv-term__chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1a1815;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+  }
+  .serv-term__chrome i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    font-style: normal;
+    flex: none;
+  }
+  .serv-term__chrome i:nth-child(1) { background: #FF5F57; }
+  .serv-term__chrome i:nth-child(2) { background: #FFBD2E; }
+  .serv-term__chrome i:nth-child(3) { background: #28CA41; }
+  .serv-term__chrome span {
+    margin-left: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .serv-term__body {
+    padding: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 2.05;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .serv-term__body .st-prompt { color: var(--accent); font-weight: 500; }
+  .serv-term__body .st-cmd { color: var(--text); }
+  .serv-term__body .st-comment { color: var(--muted); }
+  .serv-term__body .st-out { color: var(--muted); }
+  .serv-term__body .st-ok { color: var(--accent); }
+
+  /* Install section — platform cards with copy buttons */
+  .install-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+  .install-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+    transition: border-color 0.2s;
+  }
+  .install-card:hover { border-color: rgba(46, 203, 168, 0.5); }
+  .install-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .install-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .install-card h3 .pkg {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(46, 203, 168, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 2px 6px;
+  }
+  .install-card pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin: 0;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .install-card code { color: var(--text); white-space: nowrap; }
+  [data-copy] {
+    display: none; /* revealed only when JS is active (see serv-copy.js) */
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 4px 8px;
+    flex: none;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  html.js [data-copy] { display: inline-block; }
+  [data-copy]:hover { color: var(--accent); border-color: var(--accent); }
+  [data-copy].is-copied { color: var(--accent); border-color: var(--accent); }
+  [data-copy].is-error { color: #FF6B6B; border-color: #FF6B6B; }
+  .install-note {
+    margin-top: var(--space-3);
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 65ch;
+  }
+  .install-note a { color: var(--accent); }
+
+  /* Compact install strip (guide pages) */
+  .serv-strip pre {
+    margin-bottom: var(--space-2);
+  }
+  .serv-strip code { color: var(--text); }
+
+  /* Product footer band */
+  .serv-foot {
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) 0 var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .serv-foot__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .serv-foot__brand img {
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px var(--border);
+  }
+  .serv-foot__brand b {
+    font-weight: 500;
+    color: var(--text);
+  }
+  .serv-foot__brand a,
+  .serv-foot__links a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .serv-foot__brand a:hover,
+  .serv-foot__links a:hover { color: var(--accent); }
+  .serv-foot__links {
+    margin-left: auto;
+    display: inline-flex;
+    gap: var(--space-3);
+  }
+  @media (max-width: 700px) {
+    .serv-foot__links { margin-left: 0; }
+  }
+</style>

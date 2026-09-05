@@ -1,0 +1,65 @@
+---
+// Long-tail SEO page: "NSSM alternative" (comparison seed).
+// Drop into: src/pages/serv/nssm-alternative.astro  →  /serv/nssm-alternative/
+import ServLayout from '../../layouts/ServLayout.astro';
+
+const canonical = 'https://tillmanbuildstech.com/serv/nssm-alternative/';
+const title = 'NSSM alternative: Serv — cross-platform service wrapper (Windows, Linux, macOS)';
+const description = 'Serv is a modern NSSM alternative: install and supervise any executable as a Windows service, systemd unit, or launchd job from one YAML config. Graceful shutdown, auto-restart with backoff, hooks.';
+---
+
+<ServLayout title={title} description={description} canonical={canonical}>
+  <section class="serv-hero">
+    <p class="serv-label">// comparison</p>
+    <h1>Looking for an NSSM alternative?</h1>
+    <p class="lead">
+      <a href="https://nssm.cc/">NSSM</a> (Non-Sucking Service Manager) has been the go-to way to
+      wrap an arbitrary program as a Windows service for years. Serv is a modern, cross-platform replacement
+      built for the same job — and more.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// comparison table</p>
+    <h2>How Serv compares to NSSM</h2>
+    <table>
+      <thead><tr><th></th><th>NSSM</th><th>Serv</th></tr></thead>
+      <tbody>
+        <tr><td>Platforms</td><td>Windows</td><td>Windows, Linux, macOS</td></tr>
+        <tr><td>Config format</td><td>GUI / registry / INI</td><td>One YAML file, portable</td></tr>
+        <tr><td>Auto-restart</td><td>Yes</td><td>Yes, with exponential backoff</td></tr>
+        <tr><td>Graceful shutdown</td><td>Basic</td><td>Escalating (Ctrl+C → close → terminate / SIGTERM → SIGKILL)</td></tr>
+        <tr><td>Process-tree kill</td><td>Limited</td><td>Full tree with PID-reuse protection</td></tr>
+        <tr><td>Log rotation</td><td>Yes</td><td>Size- &amp; age-based, timestamped files</td></tr>
+        <tr><td>Lifecycle hooks</td><td>Some</td><td>pre-start / post-start / pre-stop / post-exit</td></tr>
+        <tr><td>Windows accounts</td><td>Yes</td><td>LocalSystem, virtual, custom + "Log on as a service"</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <p class="serv-label">// why switch</p>
+    <h2>Why switch</h2>
+    <ul>
+      <li><strong>Cross-platform</strong> — the same YAML config installs a Windows service, a systemd unit, or a launchd job. NSSM is Windows-only.</li>
+      <li><strong>Declarative config</strong> — check your service definition into version control.</li>
+      <li><strong>Modern supervision</strong> — exponential-backoff restarts, graceful shutdown escalation, per-exit-code actions.</li>
+    </ul>
+    <p>
+      Install it with <code>winget install TillmanBuildsTech.Serv</code>,
+      <code>choco install serv</code>, or <code>brew install serv</code> — all
+      options on the <a href="/serv/#install">Serv install page</a>. Then try it:
+      <code>serv install --exe /path/to/myapp --name myapp</code> — see the
+      <a href="https://github.com/TillmanBuildsTech/serv/blob/main/README.md">README</a> for details.
+    </p>
+  </section>
+
+  <section>
+    <p class="serv-label">// guides</p>
+    <h2>Guides</h2>
+    <ul>
+      <li><a href="/serv/run-python-as-a-service/">Run a Python script as a service</a></li>
+      <li><a href="/serv/run-node-as-a-service/">Run a Node.js app as a service</a></li>
+    </ul>
+  </section>
+</ServLayout>
